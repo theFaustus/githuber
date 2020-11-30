@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/9dfa6c6e5c.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <title>githuber | home</title>
+</head>
+<body>
+
+<div class="jumbotron" style="margin-bottom: 0;">
+    <h1 class="display-5">githuber</h1>
+    <p class="lead">Get some basic GitHub info - fast and simple.</p>
+    <hr class="my-1">
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 alert alert-info" style="padding-top: 40px;">
+    <div class="col mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Repository</h5>
+                <p class="card-text">Get some basic information about a repository </p>
+                <form action="#" method="get" th:action="@{/get-repo}">
+                    <div class="form-group">
+                        <label for="repoOrgName">Repo path</label>
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-control" id="repoOrgName" placeholder="Org name" th:name="orgName"
+                                       type="text">
+                            </div>
+                            <div class="col">
+                                <input class="form-control" id="repoName" placeholder="Repo name" th:name="repoName"
+                                       type="text">
+                            </div>
+                        </div>
+                        <small class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Check</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">User</h5>
+                <p class="card-text">Get some basic information about a GitHub user </p>
+                <form action="#" method="get" th:action="@{/get-user}">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input aria-describedby="usernameHelp" class="form-control" id="username" th:name="username"
+                               type="text">
+                        <small class="form-text text-muted" id="usernameHelp">We'll never share your email with anyone
+                            else.</small>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Check</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Repo Contributors</h5>
+                <p class="card-text">Get the contributors on a map of a repository</p>
+                <form action="#" method="get" th:action="@{/get-contribs}">
+                    <div class="form-group">
+                        <label for="contribRepoOrgName">Repo path</label>
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-control" id="contribRepoOrgName" placeholder="Org name"
+                                       th:name="orgName" type="text">
+                            </div>
+                            <div class="col">
+                                <input class="form-control" id="contribRepoUsername" placeholder="Repo name"
+                                       th:name="repoName" type="text">
+                            </div>
+                        </div>
+                        <small class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Check</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="d-flex justify-content-center">
+    <div th:if="${gitHubUser != null}">
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row no-gutters">
+                <div class="col-md-4" style="padding: 15px;">
+                    <img alt="..." class="card-img rounded-circle" src="..." th:src="${gitHubUser.avatarUrl}">
+                    <p class="d-flex justify-content-center"
+                       th:text="${ (gitHubUser.company == null ? '' : gitHubUser.company) + ' ' + (gitHubUser.location == null ? '' : gitHubUser.location)}"></p>
+                    <br>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${gitHubUser.username + '/' + gitHubUser.name}"></h5>
+                        <p class="card-text" th:text="${gitHubUser.bio}"></p>
+                        <i class="fas fa-project-diagram"></i><span
+                            th:text="${' Repos - ' + gitHubUser.numberOfRepositories}"></span><br>
+                        <i class="fab fa-gratipay"></i><span
+                            th:text="${' Followers - ' + gitHubUser.numberOfFollowers}"></span><br>
+                        <i class="fas fa-link"></i><span th:text="${' URL - ' + gitHubUser.url}"></span><br>
+                        <p class="card-text"><small class="text-muted"
+                                                    th:text="'Joined GitHub on ' + ${gitHubUser.creationDate}"></small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:if="${gitHubRepo != null}">
+        <div class="card bg-light mb-3" style="max-width: 540px;">
+            <div class="card-header" th:text="${gitHubRepo.owner.username + '/' + gitHubRepo.owner.name}"></div>
+            <div class="card-body">
+                <h5 class="card-title" th:text="${gitHubRepo.name}"></h5>
+                <p class="card-text" th:text="${gitHubRepo.description}"></p>
+                <i class="fas fa-link"></i><span th:text="${' URL - ' + gitHubRepo.url}"></span><br>
+                <p class="card-text"><small class="text-muted"
+                                            th:text="'Created on ' + ${gitHubRepo.creationDate}"></small></p>
+            </div>
+        </div>
+    </div>
+    <div th:if="${gitHubRepoContributors != null}">
+
+        <div class="overflow-auto" style="max-height: 300px;">
+            <div class="list-group" id="list-example">
+                <a class="list-group-item list-group-item-action" target="_blank"
+                   th:each="contrib : ${gitHubRepoContributors}"
+                   th:href="${contrib.url}">
+                    <i class="fas fa-user"></i><span th:text="${' ' + contrib.username + ' - ' + contrib.url}"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
