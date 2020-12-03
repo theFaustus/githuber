@@ -24,8 +24,6 @@ public class GithuberApplication {
 	public CommandLineRunner commandLineRunner(GitHubService gitHubService) {
 		return args -> {
 			System.out.println(gitHubService.getUserByUsername("theFaustus"));
-			System.out.println(gitHubService.getRepoByOrganizationAndByRepoName("theFaustus", "githuber"));
-			System.out.println(gitHubService.getContributorsByOrganizationAndByRepoName("theFaustus", "githuber"));
 		};
 	}
 }

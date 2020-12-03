@@ -20,6 +20,7 @@ public class GitHubUser {
     private String name;
     private String company;
     private String location;
+    private City city;
     private String email;
     private String bio;
     @JsonProperty("created_at")
@@ -28,4 +29,6 @@ public class GitHubUser {
     private int numberOfRepositories;
     @JsonProperty("followers")
     private int numberOfFollowers;
+    private String color;
+
 }
