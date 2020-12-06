@@ -1,8 +1,10 @@
 package com.evil.inc.githuber.service.impl;
 
+import com.evil.inc.githuber.domain.GitHubCommit;
 import com.evil.inc.githuber.domain.GitHubContributor;
 import com.evil.inc.githuber.domain.GitHubRepo;
 import com.evil.inc.githuber.domain.GitHubUser;
+import com.evil.inc.githuber.service.GitHubProducerService;
 import com.evil.inc.githuber.service.GitHubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +25,7 @@ import java.util.Random;
 class GitHubServiceImpl implements GitHubService {
     public static final String GITHUB_API_URL = "https://api.github.com";
     private final RestTemplate restTemplate;
+    private final GitHubProducerService gitHubProducerService;
 
     @Value("${github.personal.access.token}")
     private String personalAccessToken;
@@ -51,6 +54,16 @@ class GitHubServiceImpl implements GitHubService {
 
         return response.getBody();
     }
+
+    @Override
+    public List<GitHubCommit> getRepoCommitsByOrganizationAndByRepoName(String organizationName, String repoName) {
+        ResponseEntity<List<GitHubCommit>> response = restTemplate.exchange(
+                GITHUB_API_URL + "/repos/" + organizationName + "/" + repoName + "/commits",
+                HttpMethod.GET, getAuthorizedHttpEntity(), new ParameterizedTypeReference<>() {
+                });
+        return response.getBody();
+    }
+
 
     @Override
     public List<GitHubUser> getContributorsByOrganizationAndByRepoName(String organizationName, String repoName) {

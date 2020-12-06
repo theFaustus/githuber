@@ -23,7 +23,7 @@ public class GithuberApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(GitHubService gitHubService) {
 		return args -> {
-			System.out.println(gitHubService.getUserByUsername("theFaustus"));
+			System.out.println(gitHubService.getRepoCommitsByOrganizationAndByRepoName("theFaustus", "githuber"));
 		};
 	}
 }

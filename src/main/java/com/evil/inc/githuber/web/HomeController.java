@@ -41,4 +41,11 @@ public class HomeController {
         return mav;
     }
 
+    @GetMapping("get-commits")
+    public ModelAndView getCommits(@RequestParam("orgName") String orgName, @RequestParam("repoName") String repoName) {
+        ModelAndView mav = home();
+        mav.addObject("gitHubRepoCommits", gitHubService.getRepoCommitsByOrganizationAndByRepoName(orgName, repoName));
+        return mav;
+    }
+
 }
