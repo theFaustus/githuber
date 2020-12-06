@@ -133,14 +133,28 @@
         </div>
     </div>
     <div th:if="${gitHubRepo != null}">
-        <div class="card bg-light mb-3" style="max-width: 540px;">
-            <div class="card-header" th:text="${gitHubRepo.owner.username + '/' + gitHubRepo.owner.name}"></div>
-            <div class="card-body">
-                <h5 class="card-title" th:text="${gitHubRepo.name}"></h5>
-                <p class="card-text" th:text="${gitHubRepo.description}"></p>
-                <i class="fas fa-link"></i><span th:text="${' URL - ' + gitHubRepo.url}"></span><br>
-                <p class="card-text"><small class="text-muted"
-                                            th:text="'Created on ' + ${gitHubRepo.creationDate}"></small></p>
+        <div style="display: flex">
+            <div class="card bg-light mb-3" style="max-width: 540px;">
+                <div class="card-header" th:text="${gitHubRepo.owner.username + '/' + gitHubRepo.owner.name}"></div>
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${gitHubRepo.name}"></h5>
+                    <p class="card-text" th:text="${gitHubRepo.description}"></p>
+                    <i class="fas fa-link"></i><span th:text="${' URL - ' + gitHubRepo.url}"></span><br>
+                    <p class="card-text"><small class="text-muted"
+                                                th:text="'Created on ' + ${gitHubRepo.creationDate}"></small></p>
+                </div>
+            </div>
+            <div class="overflow-auto" style="max-height: 300px; margin-left: 15px;">
+                <div class="list-group" id="commits">
+
+                    <a class="list-group-item list-group-item-action" target="_blank"
+                       th:each="commit : ${gitHubRepoCommits}">
+                        <i class="fas fa-hashtag"></i>
+                        <span th:text="${commit.sha}"></span><br>
+                        <i class="fas fa-user"></i>
+                        <span th:text="${' ' + commit.commit.author.name + ' - ' + commit.commit.message}"></span>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -200,7 +214,7 @@
 
             </script>
             <div class="overflow-auto" style="max-height: 300px; margin-left: 15px;">
-                <div class="list-group" id="list-example">
+                <div class="list-group" id="contributors">
                     <a class="list-group-item list-group-item-action" target="_blank"
                        th:each="contrib : ${gitHubRepoContributors}"
                        th:href="${contrib.url}">

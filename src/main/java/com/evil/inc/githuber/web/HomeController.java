@@ -31,6 +31,7 @@ public class HomeController {
     public ModelAndView getUser(@RequestParam("orgName") String orgName, @RequestParam("repoName") String repoName) {
         ModelAndView mav = home();
         mav.addObject("gitHubRepo", gitHubService.getRepoByOrganizationAndByRepoName(orgName, repoName));
+        mav.addObject("gitHubRepoCommits", gitHubService.getRepoCommitsByOrganizationAndByRepoName(orgName, repoName));
         return mav;
     }
 
@@ -38,13 +39,6 @@ public class HomeController {
     public ModelAndView getContributors(@RequestParam("orgName") String orgName, @RequestParam("repoName") String repoName) {
         ModelAndView mav = home();
         mav.addObject("gitHubRepoContributors", gitHubService.getContributorsByOrganizationAndByRepoName(orgName, repoName));
-        return mav;
-    }
-
-    @GetMapping("get-commits")
-    public ModelAndView getCommits(@RequestParam("orgName") String orgName, @RequestParam("repoName") String repoName) {
-        ModelAndView mav = home();
-        mav.addObject("gitHubRepoCommits", gitHubService.getRepoCommitsByOrganizationAndByRepoName(orgName, repoName));
         return mav;
     }
 
