@@ -17,7 +17,9 @@ public class HomeController {
 
     @GetMapping
     public ModelAndView home() {
-        return new ModelAndView("home");
+        ModelAndView mav = new ModelAndView("home");
+        mav.addObject("trendingRepos", gitHubService.getTrendingRepos());
+        return mav;
     }
 
     @GetMapping("get-user")

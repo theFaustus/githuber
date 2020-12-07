@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -81,12 +82,15 @@ class GitHubServiceImpl implements GitHubService {
     }
 
     @Override
-    public GitHubRepos getTrendingRepos() {
+    public List<GitHubRepo> getTrendingRepos() {
         String today = LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         ResponseEntity<GitHubRepos> response = restTemplate.exchange(
                 GITHUB_API_URL + "/search/repositories?q=created:>" + today + "&sort=stars&order=desc",
                 HttpMethod.GET, getAuthorizedHttpEntity(), GitHubRepos.class);
-        return response.getBody();
+        GitHubRepos gitHubRepos = response.getBody();
+        if (gitHubRepos != null)
+            return gitHubRepos.getItems();
+        return Collections.emptyList();
     }
 
 
