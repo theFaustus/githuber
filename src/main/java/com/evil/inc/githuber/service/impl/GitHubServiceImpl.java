@@ -3,8 +3,8 @@ package com.evil.inc.githuber.service.impl;
 import com.evil.inc.githuber.domain.GitHubCommit;
 import com.evil.inc.githuber.domain.GitHubContributor;
 import com.evil.inc.githuber.domain.GitHubRepo;
+import com.evil.inc.githuber.domain.GitHubRepos;
 import com.evil.inc.githuber.domain.GitHubUser;
-import com.evil.inc.githuber.service.GitHubProducerService;
 import com.evil.inc.githuber.service.GitHubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,7 +27,6 @@ import java.util.Random;
 class GitHubServiceImpl implements GitHubService {
     public static final String GITHUB_API_URL = "https://api.github.com";
     private final RestTemplate restTemplate;
-    private final GitHubProducerService gitHubProducerService;
 
     @Value("${github.personal.access.token}")
     private String personalAccessToken;
@@ -78,6 +79,16 @@ class GitHubServiceImpl implements GitHubService {
         populateCoordinatesAndColors(users);
         return users;
     }
+
+    @Override
+    public GitHubRepos getTrendingRepos() {
+        String today = LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        ResponseEntity<GitHubRepos> response = restTemplate.exchange(
+                GITHUB_API_URL + "/search/repositories?q=created:>" + today + "&sort=stars&order=desc",
+                HttpMethod.GET, getAuthorizedHttpEntity(), GitHubRepos.class);
+        return response.getBody();
+    }
+
 
     private void populateCoordinatesAndColors(List<GitHubUser> users) {
         users.forEach(u -> u.setColor(getRandomHexColor()));

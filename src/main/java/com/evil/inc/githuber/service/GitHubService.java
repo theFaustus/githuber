@@ -2,6 +2,7 @@ package com.evil.inc.githuber.service;
 
 import com.evil.inc.githuber.domain.GitHubCommit;
 import com.evil.inc.githuber.domain.GitHubRepo;
+import com.evil.inc.githuber.domain.GitHubRepos;
 import com.evil.inc.githuber.domain.GitHubUser;
 
 import java.util.List;
@@ -16,4 +17,5 @@ public interface GitHubService {
 
     List<GitHubUser> getContributorsByOrganizationAndByRepoName(String organizationName, String repoName);
 
+    GitHubRepos getTrendingRepos();
 }
